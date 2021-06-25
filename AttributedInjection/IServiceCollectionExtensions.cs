@@ -32,5 +32,20 @@ namespace AttributedInjection {
 			}
 			return services;
 		}
+
+		public static IServiceCollection AddAttributedInjectionsFromAssemblyContaining<T>(this IServiceCollection services) {
+			foreach(var (type, injectAttributes) in typeof(T).Assembly.EnumerateTypesWithAttributes<BaseInjectionAttribute>()) {
+				foreach(var injectAttribute in injectAttributes) {
+					var serviceType = injectAttribute.ServiceType;
+					if(serviceType is null) {
+						var assumedType = type.GetInterfaces().FirstOrDefault() ?? type;
+						if(assumedType.IsGenericType) { assumedType = assumedType.GetGenericTypeDefinition(); }
+						serviceType = assumedType;
+					}
+					services.IdempotentAdd(new ServiceDescriptor(serviceType, type, injectAttribute.ServiceLifetime));
+				}
+			}
+			return services;
+		}
 	}
 }
