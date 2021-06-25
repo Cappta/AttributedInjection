@@ -5,6 +5,19 @@ using System.Linq;
 
 namespace AttributedInjection {
 	public static class IServiceCollectionExtensions {
+		private static IServiceCollection IdempotentAdd(this IServiceCollection services, ServiceDescriptor serviceDescriptor) {
+			if(services.Any(sd =>
+				sd.ServiceType == serviceDescriptor.ServiceType &&
+				sd.ImplementationInstance == serviceDescriptor.ImplementationInstance &&
+				sd.ImplementationType == serviceDescriptor.ImplementationType &&
+				sd.ImplementationFactory == serviceDescriptor.ImplementationFactory
+				) == false
+			) {
+				services.Add(serviceDescriptor);
+			}
+			return services;
+		}
+
 		public static IServiceCollection AddAttributedInjections(this IServiceCollection services) {
 			foreach(var (type, injectAttributes) in AppDomain.CurrentDomain.EnumerateTypesWithAttributes<BaseInjectionAttribute>()) {
 				foreach(var injectAttribute in injectAttributes) {
@@ -14,19 +27,7 @@ namespace AttributedInjection {
 						if(assumedType.IsGenericType) { assumedType = assumedType.GetGenericTypeDefinition(); }
 						serviceType = assumedType;
 					}
-					switch(injectAttribute) {
-						case TranscientAttribute _:
-							services.AddTransient(serviceType, type);
-							break;
-						case ScopedAttribute _:
-							services.AddScoped(serviceType, type);
-							break;
-						case SingletonAttribute _:
-							services.AddSingleton(serviceType, type);
-							break;
-						default:
-							throw new NotImplementedException($"{injectAttribute.GetType()} has not been implemented");
-					}
+					services.IdempotentAdd(new ServiceDescriptor(serviceType, type, injectAttribute.ServiceLifetime));
 				}
 			}
 			return services;
