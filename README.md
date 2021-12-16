@@ -1,5 +1,5 @@
 # AttributedInjection
-Fornece injeção de dependência por atributos para projetos NetCore.
+Fornece injeção de dependência por atributo para projetos NetCore.
 
 ### O que você vai encontrar aqui:
   - Instalação
