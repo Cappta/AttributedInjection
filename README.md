@@ -38,7 +38,7 @@ namespace Application
 ```
 
 ### Adicionar a forma de injeção ao serviço:
-Adicione a diretiva `using` para o pacote na classe e configure qual será a forma de injeção de dependência no serviço através do uso dos atributos [`[Singleton]`, `[Scoped]` ou `[Transient]`](https://docs.microsoft.com/pt-br/dotnet/core/extensions/dependency-injection).
+Adicione a diretiva `using` para o pacote na classe e configure qual será a forma de injeção de dependência no serviço através do uso dos atributos [`[Singleton]`](https://docs.microsoft.com/pt-br/dotnet/core/extensions/dependency-injection#singleton), [`[Scoped]`](https://docs.microsoft.com/pt-br/dotnet/core/extensions/dependency-injection#scoped) ou [`[Transient]`](https://docs.microsoft.com/pt-br/dotnet/core/extensions/dependency-injection#transient).
 
 ```c#
 using AttributedInjection;
