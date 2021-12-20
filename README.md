@@ -1,5 +1,5 @@
 # AttributedInjection
-Fornece injeção de dependência por atributo para projetos NetCore.
+Fornece injeção de dependência por atributo para projetos NetCore através do uso dos tempos de vida Singleton, Scoped e Transient. Assim, não se faz necessário o registro individual de todas as dependências do seu projeto na Startup ou em uma classe específica. Após configurar uma única vez, injetando por atributo, cada dependência será atualizada automaticamente.
 
 ### O que você vai encontrar aqui:
   - Instalação
